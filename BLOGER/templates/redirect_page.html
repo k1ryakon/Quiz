@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Редирект</title>
+</head>
+<body>
+    <h1>{{ message }}</h1>
+    <p>Перенаправление через 3 секунды...</p>
+    
+    <script>
+        setTimeout(function() {
+            window.location.href = "{% url 'index' %}";
+        }, 3000); // 3 секунды
+    </script>
+</body>
+</html>

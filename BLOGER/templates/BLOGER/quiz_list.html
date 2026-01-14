@@ -1,0 +1,14 @@
+<h2>Publishers</h2>
+<ul>
+    {% for name in zapupa %}
+        <a>{{ name.name }}</a>
+        </li>{{ name.question1 }}</li>
+        </li>{{ name.question2 }}</li>
+        </li>{{ name.question3 }}</li>
+    {% endfor %}
+</ul>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
