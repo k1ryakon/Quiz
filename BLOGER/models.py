@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class Quiz(models.Model):
     name = models.CharField(max_length=200)
@@ -11,5 +12,4 @@ class Quiz(models.Model):
     
     def __str__(self):
         return self.name
-    
     
