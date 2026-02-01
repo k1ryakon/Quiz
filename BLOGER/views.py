@@ -1,7 +1,8 @@
 from django.contrib import messages
-from django.views.generic import ListView, RedirectView, DetailView
+from django.views.generic import ListView, RedirectView, DetailView, CreateView
 from .models import Quiz
 from django.shortcuts import render
+from .forms import CreateQuizForm
 
 class Quizeble(ListView):
     model = Quiz
@@ -24,4 +25,16 @@ class QuizDetail(DetailView):
     model = Quiz
     template_name = 'quiz_detail.html'
     context_object_name = 'quiz'
+    
+
+class QuizCreareView(CreateView):
+    model = Quiz
+    template_name = 'quiz_create.html'
+    form_class = CreateQuizForm
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Добавление нового Квиза'
+        return context
+    
     

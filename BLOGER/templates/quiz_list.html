@@ -1,14 +1,17 @@
 <h2>Publishers</h2>
 <ul>
     {% for name in zapupa %}
-        <a>{{ name.name }}</a>
-        </li>{{ name.question1 }}</li>
-        </li>{{ name.question2 }}</li>
-        </li>{{ name.question3 }}</li>
+        <li>
+            <a href="{{ name.get_absolute_url }}">{{ name.name }}</a>
+            <div>{{ name.question1 }}</div>
+            <div>{{ name.question2 }}</div>
+            <div>{{ name.question3 }}</div>
+        </li>
     {% endfor %}
 </ul>
-{% if messages %}
+ {% if messages %}
     {% for message in messages %}
         <div class="alert">{{ message }}</div>
     {% endfor %}
-{% endif %}
+{% endif %} 
+<a href="{% url 'quiz_create' %}">Создать квиз</a>
