@@ -1,10 +1,12 @@
 from django.contrib import messages
-from django.views.generic import ListView, RedirectView, DetailView, CreateView
+from django.views.generic import ListView, RedirectView, DetailView, CreateView, UpdateView
 from .models import Quiz
 from django.shortcuts import render
-from .forms import CreateQuizForm
+from .forms import CreateQuizForm, UpdateQuizForm
+from django.urls import reverse_lazy
 
 class Quizeble(ListView):
+    paginate_by = 2
     model = Quiz
     template_name = 'quiz_list.html'
     context_object_name = 'zapupa'
@@ -37,4 +39,14 @@ class QuizCreareView(CreateView):
         context['title'] = 'Добавление нового Квиза'
         return context
     
+class QuizUpdateView(UpdateView):
+    model = Quiz
+    template_name = 'quiz_update.html'
+    form_class = UpdateQuizForm
     
+    success_url = reverse_lazy('index')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Update Quizes'
+        return context
