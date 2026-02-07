@@ -11,3 +11,4 @@ class UpdateQuizForm(CreateQuizForm):
     class Meta:    
         model = Quiz
         fields = CreateQuizForm.Meta.fields + ('updater', "fixed")
+        

@@ -1,3 +1,5 @@
 <p>{{quiz.name}}</p>
 <p>{{quiz.pk}}</p>
+<p>{{quiz.author}}</p>
 <a href="{% url 'quiz_update' quiz.pk %}">изменить квиз</a>
+<a href="{% url 'quiz_delete' quiz.pk %}">УДАЛИТЬ квиз</a>

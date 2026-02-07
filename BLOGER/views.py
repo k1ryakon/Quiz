@@ -1,9 +1,10 @@
 from django.contrib import messages
-from django.views.generic import ListView, RedirectView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, RedirectView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Quiz
 from django.shortcuts import render
 from .forms import CreateQuizForm, UpdateQuizForm
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class Quizeble(ListView):
     paginate_by = 2
@@ -29,16 +30,27 @@ class QuizDetail(DetailView):
     context_object_name = 'quiz'
     
 
-class QuizCreareView(CreateView):
+
+
+class QuizCreareView(LoginRequiredMixin, CreateView):
     model = Quiz
     template_name = 'quiz_create.html'
     form_class = CreateQuizForm
+    success_url = reverse_lazy('index')
+    login_url = 'index'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Добавление нового Квиза'
         return context
     
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+
+
+
 class QuizUpdateView(UpdateView):
     model = Quiz
     template_name = 'quiz_update.html'
@@ -50,3 +62,8 @@ class QuizUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Update Quizes'
         return context
+    
+class QuizDeleteView(DeleteView):
+    model = Quiz
+    template_name = 'quiz_delete.html'
+    success_url = reverse_lazy('index')
