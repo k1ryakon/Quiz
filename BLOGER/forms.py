@@ -1,4 +1,4 @@
-from .models import Quiz, Comment
+from .models import Quiz
 from django import forms
 
 class CreateQuizForm(forms.ModelForm):
@@ -11,15 +11,4 @@ class UpdateQuizForm(CreateQuizForm):
     class Meta:    
         model = Quiz
         fields = CreateQuizForm.Meta.fields + ('updater', "fixed")
-        
-class CommentCreateForm(forms.ModelForm):
-    """
-    Форма добавления комментариев к статьям
-    """
-    parent = forms.IntegerField(widget=forms.HiddenInput, required=False)
-    content = forms.CharField(label='', widget=forms.Textarea(
-        attrs={'cols': 30, 'rows': 5, 'placeholder': 'Комментарий', 'class': 'form-control'}))
-
-    class Meta:
-        model = Comment
-        fields = ('content',)        
+               

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Quizeble, MyRedirectEpta, my_redirect_aloha, QuizDetail, QuizCreareView, QuizUpdateView, QuizDeleteView, CommentCreateView
+from .views import Quizeble, MyRedirectEpta, my_redirect_aloha, QuizDetail, QuizCreareView, QuizUpdateView, QuizDeleteView
 from django.views.generic import RedirectView
 
 
@@ -12,6 +12,5 @@ urlpatterns = [
     path('quiz/<int:pk>/update/',QuizUpdateView.as_view(), name='quiz_update'),
     path('quiz/<int:pk>', QuizDetail.as_view(), name='quiz_detail'),
     path('quiz/create', QuizCreareView.as_view(), name='quiz_create'),
-    path('quiz/<int:pk>/comments/create/', CommentCreateView.as_view(), name='comment_create_view'),
     path('quiz/<int:pk>/delete/', QuizDeleteView.as_view(), name='quiz_delete'),
 ]
