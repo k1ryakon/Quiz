@@ -3,3 +3,8 @@
 <p>{{quiz.author}}</p>
 <a href="{% url 'quiz_update' quiz.pk %}">изменить квиз</a>
 <a href="{% url 'quiz_delete' quiz.pk %}">УДАЛИТЬ квиз</a>
+ {% if quiz.tags.all %}
+    <div class="card-footer border-0">
+        Теги записи: {% for tag in quiz.tags.all %} <a href="{% url 'quiz_tags' tag.slug %}">{{ tag }}</a>, {% endfor %}
+    </div>
+    {% endif %}

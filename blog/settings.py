@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'BLOGER',
     'taggit',
+    'django_recaptcha',
+    'ckeditor_uploader',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -123,4 +126,18 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+RECAPTCHA_PUBLIC_KEY = '6LdAamosAAAAADdOAnyJno_Fgkctz1WkNrGkeKaR'
+RECAPTCHA_PRIVATE_KEY = '6LdAamosAAAAAMKjvcr5J4v62Qmc3LV0m1ZwW0rC'
+
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static/'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'full',
+        'height': 300,
+    },
+}

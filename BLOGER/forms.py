@@ -1,7 +1,10 @@
 from .models import Quiz
 from django import forms
+from django_recaptcha.fields import ReCaptchaField
 
 class CreateQuizForm(forms.ModelForm):
+    
+    recaptcha = ReCaptchaField()
     
     class Meta:
         model = Quiz

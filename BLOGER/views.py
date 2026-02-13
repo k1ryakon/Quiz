@@ -5,7 +5,7 @@ from django.shortcuts import render
 from .forms import CreateQuizForm, UpdateQuizForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from taggit.models import Tag
 
 
 class Quizeble(ListView):
@@ -73,3 +73,19 @@ class QuizDeleteView(DeleteView):
     template_name = 'quiz_delete.html'
     success_url = reverse_lazy('index')
     
+class QuizTagsView(ListView):
+    model = Quiz
+    template_name = 'quiz_list.html'
+    context_object_name = 'zapupa'
+    paginate_by = 3
+    tag = None
+    
+    def get_queryset(self):
+        self.tag = Tag.objects.get(slug=self.kwargs['tag'])
+        queryset = Quiz.objects.filter(tags__slug=self.tag.slug)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Статьи по тегу: {self.tag.name}'
+        return context
