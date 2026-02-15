@@ -17,10 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from BLOGER.feeds import LatestPostFeed # New
+from django.conf import settings
+from django.conf.urls.static import static
 
+handler403 = 'BLOGER.views.tr_handler403' # New
+handler404 = 'BLOGER.views.tr_handler404' # New
+handler500 = 'BLOGER.views.tr_handler500' 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('feeds/latest/', LatestPostFeed(), name='latest_post_feed'),
     path('', include("BLOGER.urls")),
 ]
+# Добавьте эти строки для раздачи статики в DEBUG = False
+if not settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
