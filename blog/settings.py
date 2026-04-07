@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@r(s#g=72p31tqhr)ls-bvl442onvfd5)t(rydv+23mo7i#bcc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_recaptcha',
     'ckeditor_uploader',
     'ckeditor',
+    'nested_admin',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,15 @@ RECAPTCHA_PUBLIC_KEY = '6LdAamosAAAAADdOAnyJno_Fgkctz1WkNrGkeKaR'
 RECAPTCHA_PRIVATE_KEY = '6LdAamosAAAAAMKjvcr5J4v62Qmc3LV0m1ZwW0rC'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static/'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
+
+
+
+
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 CKEDITOR_CONFIGS = {

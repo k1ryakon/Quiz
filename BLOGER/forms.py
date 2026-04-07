@@ -1,4 +1,4 @@
-from .models import Quiz
+from .models import Quiz, Answer, Question
 from django import forms
 from django_recaptcha.fields import ReCaptchaField
 
@@ -8,10 +8,10 @@ class CreateQuizForm(forms.ModelForm):
     
     class Meta:
         model = Quiz
-        fields = ('name', 'question1', 'question2', "question3")
-
-class UpdateQuizForm(CreateQuizForm):
-    class Meta:    
-        model = Quiz
-        fields = CreateQuizForm.Meta.fields + ('updater', "fixed")
+        fields = ('name',)
                
+class AnswerOnQuestion(forms.ModelForm):
+    
+    class Meta:
+        model = Answer
+        fields = ('is_correct', )               

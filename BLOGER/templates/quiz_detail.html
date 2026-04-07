@@ -1,10 +1,29 @@
-<p>{{quiz.name}}</p>
-<p>{{quiz.pk}}</p>
-<p>{{quiz.author}}</p>
-<a href="{% url 'quiz_update' quiz.pk %}">изменить квиз</a>
-<a href="{% url 'quiz_delete' quiz.pk %}">УДАЛИТЬ квиз</a>
- {% if quiz.tags.all %}
-    <div class="card-footer border-0">
-        Теги записи: {% for tag in quiz.tags.all %} <a href="{% url 'quiz_tags' tag.slug %}">{{ tag }}</a>, {% endfor %}
+<h1>{{ quiz.name }}</h1>
+
+{% if score is not None %}
+  <div style="background: lightgreen; padding: 10px;">
+    Твой результат: {{ score }} / {{ total }}
+  </div>
+{% endif %}
+
+<form method="post" action="{% url 'quiz_detail' quiz.pk %}">
+  {% csrf_token %}
+
+  {% for ques in questions %}
+    <div class="question">
+      <p><strong>{{ ques.text }}</strong></p>
+      
+      {% for answe in ques.answer_set.all %}
+        <p>
+          <input type="radio" name="question_{{ ques.pk }}" value="{{ answe.pk }}">
+          {{ answe.text }}
+        </p>
+      {% endfor %}
     </div>
-    {% endif %}
+  {% endfor %}
+
+  <button type="submit">Проверить ответы</button>
+</form>
+
+<a href="{% url 'quiz_delete' quiz.pk %}">УДАЛИТЬ квиз</a>
+<p><a href="{% url 'index' %}">Вернуться на главную</a></p>
