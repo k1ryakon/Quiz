@@ -14,4 +14,4 @@ class AnswerOnQuestion(forms.ModelForm):
     
     class Meta:
         model = Answer
-        fields = ('is_correct', )               
+        fields = ('is_correct', )

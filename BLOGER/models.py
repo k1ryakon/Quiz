@@ -18,13 +18,14 @@ class Quiz(models.Model):
     
     
     class Meta:
-        ordering = ['-name']
+        ordering = ['-created']
     
     def __str__(self):
         return self.name
     
     def get_absolute_url(self):
         return reverse('quiz_detail', kwargs={'pk': self.pk})
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -33,6 +34,7 @@ class Question(models.Model):
     def __str__(self):
         return self.text[:50]
     
+
 class Answer(models.Model):
     class Status(models.TextChoices):
         RIGHT = 'RT', 'Right'
@@ -40,8 +42,8 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=100)
     is_correct = models.CharField(max_length=2, choices=Status.choices)
-    
-    
+
+
 class QuizResult(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)

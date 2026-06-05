@@ -2,5 +2,5 @@
     {% csrf_token %}
     <h2>Вы уверены, что хотите удалить "{{quiz.name}}"?</h2>
     <button type="submit">Да, удалить</button>
-    <a href="{% url 'quiz_delete' pk=quiz.pk %}">Отмена</a>
+    <a href="{% url 'index' %}">Отмена</a>
 </form>

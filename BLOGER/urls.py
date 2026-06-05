@@ -15,7 +15,7 @@ urlpatterns = [
     path('quiz/<int:pk>/delete/', QuizDeleteView.as_view(), name='quiz_delete'),
     path('quiz/tags/<slug:tag>/', QuizTagsView.as_view(), name='quiz_tags'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('quiz/some/', views.some, name='quiz_some'),
+    # path('quiz/some/', views.some, name='quiz_some'),
 ]
 if not settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

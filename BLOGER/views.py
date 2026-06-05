@@ -6,7 +6,7 @@ from .forms import CreateQuizForm, AnswerOnQuestion
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from taggit.models import Tag
-from django.http import HttpResponse
+from django.http import HttpResponseForbidden
 
 
 class Quizeble(ListView):
@@ -16,26 +16,6 @@ class Quizeble(ListView):
     context_object_name = 'zapupa'
     
     
-class MyRedirectEpta(RedirectView):
-    pattern_name = 'index'
-    
-    def get_redirect_url(self, *args, **kwargs):
-        messages.success(self.request, 'uletaesh/ bb')
-        return super().get_redirect_url(*args, **kwargs)
-    
-    
-def my_redirect_aloha(request):
-    context = {'message': 'Сейчас произойдёт редирект...'}
-    return render(request, 'redirect_page.html', context)
-
-
-
-
-
-
-
-
-
 class QuizDetail(LoginRequiredMixin, DetailView):
     model = Quiz
     template_name = 'quiz_detail.html'
@@ -47,15 +27,14 @@ class QuizDetail(LoginRequiredMixin, DetailView):
         context['questions'] = questions
         context['answers'] = Answer.objects.filter(question__in=questions)
         return context
+    
+    def handle_no_permission(self):
+        return HttpResponseForbidden('ahah log!')
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        quiz = self.object
-        questions = Question.objects.filter(quiz=quiz)
+        questions = Question.objects.filter(quiz=self.object)
         answere = Answer.objects.filter(question=questions)
-        
-        
-        
         score = 0
         total = questions.count()
         
@@ -65,18 +44,16 @@ class QuizDetail(LoginRequiredMixin, DetailView):
                 answer = Answer.objects.get(pk=selected_answer_id)
                 if answer.is_correct == Answer.Status.RIGHT:
                     score += 1
+        # вот это переписать надо
+        # score надо чтобы был привязан к пользователю, у меня это пока что наверное не сделано.и они должны как то сохраняться у опред. пользователя к опред. квизу. чтобы мы их не просто потом выводили а где-то в бд это значение сохранялось.
         
-        QuizResult.objects.create(user=request.user, quiz=quiz, score=score)
+        QuizResult.objects.create(user=request.user, quiz=self.object, score=score)
         
-        context = self.get_context_data()
-        context['score'] = score
-        context['total'] = total
+        # context = self.get_context_data()
+        # context['score'] = score
+        # context['total'] = total
+        # вот это надо добавить в метод по нормальному 
         return render(request, 'quiz_detail.html', context)
-
-
-
-
-
 
 
 class QuizCreareView(LoginRequiredMixin, CreateView):
@@ -85,6 +62,9 @@ class QuizCreareView(LoginRequiredMixin, CreateView):
     form_class = CreateQuizForm
     success_url = reverse_lazy('index')
     login_url = 'index'
+    
+    def handle_no_permission(self):
+        return HttpResponseForbidden('autorize!')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -96,15 +76,12 @@ class QuizCreareView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
     
     
-
-
-
-    
 class QuizDeleteView(DeleteView):
     model = Quiz
     template_name = 'quiz_delete.html'
     success_url = reverse_lazy('index')
     
+
 class QuizTagsView(ListView):
     model = Quiz
     template_name = 'quiz_list.html'
@@ -123,44 +100,22 @@ class QuizTagsView(ListView):
         return context
     
     
-def some(request):
-    if request.method == "POST":
-        form = AnswerOnQuestion(request.POST)
-        if form.is_valid():
-            form.save()
-    else:
-        form = AnswerOnQuestion()
-        # print(dir(request))
-        # print(request.)
+# def some(request):
+#     if request.method == "POST":
+#         form = AnswerOnQuestion(request.POST)
+#         if form.is_valid():
+#             form.save()
+#     else:
+#         form = AnswerOnQuestion()
+#         # print(dir(request))
+#         # print(request.)
                  
     
-    return render(request, 'some.html', {"form":form})
+#     return render(request, 'some.html', {"form":form})
         
      
     
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def tr_handler404(request, exception):
@@ -191,3 +146,18 @@ def tr_handler403(request, exception):
         'title': 'Ошибка доступа: 403',
         'error_message': 'Доступ к этой странице ограничен',
     })
+    
+
+class MyRedirectEpta(RedirectView):
+    pattern_name = 'index'
+    
+    def get_redirect_url(self, *args, **kwargs):
+        messages.success(self.request, 'uletaesh/ bb')
+        return super().get_redirect_url(*args, **kwargs)
+    
+    
+def my_redirect_aloha(request):
+    context = {'message': 'Сейчас произойдёт редирект...'}
+    return render(request, 'redirect_page.html', context)
+
+    
