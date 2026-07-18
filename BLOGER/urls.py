@@ -1,9 +1,12 @@
 from django.urls import path, include
-from .views import Quizeble, MyRedirectEpta, my_redirect_aloha, QuizDetail, QuizCreareView, QuizDeleteView, QuizTagsView
+from .views import tr_handler404, Quizeble, MyRedirectEpta, my_redirect_aloha, QuizDetail, QuizCreareView, QuizDeleteView, QuizTagsView
 from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
 from . import views
+
+
+
 
 urlpatterns = [
     path('', Quizeble.as_view(), name='index'),

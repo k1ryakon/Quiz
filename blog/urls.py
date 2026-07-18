@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from BLOGER.feeds import LatestPostFeed # New
+
 from django.conf import settings
 from django.conf.urls.static import static
 import nested_admin
@@ -27,10 +27,10 @@ handler500 = 'BLOGER.views.tr_handler500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('feeds/latest/', LatestPostFeed(), name='latest_post_feed'),
     path('', include("BLOGER.urls")),
     path('nested_amdin/', include('nested_admin.urls')),
 ]
-# Добавьте эти строки для раздачи статики в DEBUG = False
+
+
 if not settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
