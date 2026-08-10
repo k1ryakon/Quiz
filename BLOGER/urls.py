@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import tr_handler404, Quizeble, MyRedirectEpta, my_redirect_aloha, QuizDetail, QuizCreareView, QuizDeleteView, QuizTagsView
+from .views import tr_handler404, Quizeble, MyRedirectEpta, my_redirect_aloha, QuizDetail, QuizCreareView, QuizDeleteView
 from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
@@ -16,7 +16,7 @@ urlpatterns = [
     path('quiz/<int:pk>/', QuizDetail.as_view(), name='quiz_detail'),
     path('quiz/create/', QuizCreareView.as_view(), name='quiz_create'),
     path('quiz/<int:pk>/delete/', QuizDeleteView.as_view(), name='quiz_delete'),
-    path('quiz/tags/<slug:tag>/', QuizTagsView.as_view(), name='quiz_tags'),
+    # path('quiz/tags/<slug:tag>/', QuizTagsView.as_view(), name='quiz_tags'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path('quiz/some/', views.some, name='quiz_some'),
 ]
