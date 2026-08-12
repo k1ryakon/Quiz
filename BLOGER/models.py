@@ -27,7 +27,7 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='Quiz')
     text = models.CharField(max_length=350)
     
     def __str__(self):
@@ -35,7 +35,7 @@ class Question(models.Model):
     
 
 class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question')
     text = models.CharField(max_length=100)
     is_correct = models.BooleanField(default=False)
 
