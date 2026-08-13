@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden
 
 
 class Quizeble(ListView):
-    paginate_by = 8
+    paginate_by = 10
     model = Quiz
     template_name = 'quiz_list.html'
     context_object_name = 'zapupa'
@@ -31,40 +31,41 @@ class QuizDetail(LoginRequiredMixin, DetailView):
     def handle_no_permission(self):
         return HttpResponseForbidden('ahah log!')
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        questions = Question.objects.filter(quiz=self.object)
-        answere = Answer.objects.filter(question=questions)
-        score = 0
-        total = questions.count()
+    # def post(self, request, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     questions = Question.objects.filter(quiz=self.object)
+    #     answere = Answer.objects.filter(question=questions)
+    #     score = 0
+    #     total = questions.count()
         
-        for question in questions:
-            selected_answer_id = request.POST.get(f'question_{question.pk}')
-            if selected_answer_id:
-                answer = Answer.objects.get(pk=selected_answer_id)
-                if answer.is_correct == Answer.Status.RIGHT:
-                    score += 1
-        # вот это переписать надо
-        # score надо чтобы был привязан к пользователю, у меня это пока что наверное не сделано.и они должны как то сохраняться у опред. пользователя к опред. квизу. чтобы мы их не просто потом выводили а где-то в бд это значение сохранялось.
+    #     for question in questions:
+    #         selected_answer_id = request.POST.get(f'question_{question.pk}')
+    #         if selected_answer_id:
+    #             answer = Answer.objects.get(pk=selected_answer_id)
+    #             if answer.is_correct == Answer.Status.RIGHT:
+    #                 score += 1
+    #     # вот это переписать надо
+    #     # score надо чтобы был привязан к пользователю, у меня это пока что наверное не сделано.и они должны как то сохраняться у опред. пользователя к опред. квизу. чтобы мы их не просто потом выводили а где-то в бд это значение сохранялось.
         
-        QuizResult.objects.create(user=request.user, quiz=self.object, score=score)
+    #     QuizResult.objects.create(user=request.user, quiz=self.object, score=score)
         
-        # context = self.get_context_data()
-        # context['score'] = score
-        # context['total'] = total
-        # вот это надо добавить в метод по нормальному 
-        return render(request, 'quiz_detail.html', context)
+    #     # context = self.get_context_data()
+    #     # context['score'] = score
+    #     # context['total'] = total
+    #     # вот это надо добавить в метод по нормальному 
+    #     return render(request, 'quiz_detail.html', context)
 
 
 class QuizCreareView(LoginRequiredMixin, CreateView):
-    model = Quiz
     template_name = 'quiz_create.html'
     form_class = CreateQuizForm
     success_url = reverse_lazy('index')
     login_url = 'index'
+    initial = {'name': 'lol'}
+    permission_denied_message = 'ebbbaaat'
     
-    def handle_no_permission(self):
-        return HttpResponseForbidden('autorize!')
+    # def handle_no_permission(self):
+    #     return HttpResponseForbidden('autorize!')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,40 +81,6 @@ class QuizDeleteView(DeleteView):
     model = Quiz
     template_name = 'quiz_delete.html'
     success_url = reverse_lazy('index')
-    
-
-class QuizTagsView(ListView):
-    model = Quiz
-    template_name = 'quiz_list.html'
-    context_object_name = 'zapupa'
-    paginate_by = 3
-    tag = None
-    
-    def get_queryset(self):
-        self.tag = Tag.objects.get(slug=self.kwargs['tag'])
-        queryset = Quiz.objects.filter(tags__slug=self.tag.slug)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = f'Статьи по тегу: {self.tag.name}'
-        return context
-    
-    
-# def some(request):
-#     if request.method == "POST":
-#         form = AnswerOnQuestion(request.POST)
-#         if form.is_valid():
-#             form.save()
-#     else:
-#         form = AnswerOnQuestion()
-#         # print(dir(request))
-#         # print(request.)
-                 
-    
-#     return render(request, 'some.html', {"form":form})
-        
-     
     
     
 
