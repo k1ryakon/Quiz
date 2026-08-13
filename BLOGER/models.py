@@ -27,20 +27,30 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='Quiz')
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='question')
     text = models.CharField(max_length=350)
     
     def __str__(self):
         return self.text[:50]
     
+        def __str__(self):
+            return self.text
+
 
 class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answer')
     text = models.CharField(max_length=100)
     is_correct = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.text
 
+    
 class QuizResult(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    score = models.PositiveIntegerField() 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_results')
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='results')
+    score = models.PositiveIntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created']
