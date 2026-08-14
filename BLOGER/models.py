@@ -9,7 +9,7 @@ class Quiz(models.Model):
     updater = models.ForeignKey(to=User, verbose_name='Обновил', on_delete=models.SET_NULL, null=True,
                             related_name='updater_posts', blank=True)
     fixed = models.BooleanField(verbose_name='Прикреплено', default=False)
-    author = models.ForeignKey(to=User, verbose_name='Автор', on_delete=models.SET_NULL, related_name='author_posts')
+    author = models.ForeignKey(to=User, verbose_name='Автор', on_delete=models.SET_NULL, related_name='author_posts', null=True)
     tags = TaggableManager(blank=True)
     
     created = models.DateTimeField(auto_now_add=True)
@@ -33,8 +33,7 @@ class Question(models.Model):
     def __str__(self):
         return self.text[:50]
     
-        def __str__(self):
-            return self.text
+
 
 
 class Answer(models.Model):
@@ -50,7 +49,6 @@ class QuizResult(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_results')
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='results')
     score = models.PositiveIntegerField()
-    created = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ['-created']
+
+
